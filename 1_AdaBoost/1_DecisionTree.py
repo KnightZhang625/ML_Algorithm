@@ -79,12 +79,15 @@ def ID3(data, feature, threshold):
 
 			feature.remove(fe_selected)
 			dic_temp = {fe_selected : {}}
+
 			for fe_v in feature_type:
 				data_fe = []
 				for d in data:
 					if d[0][idx_max] == fe_v:
 						d[0].pop(idx_max)
 						data_fe.append(d)
+						data.remove(d)		# important, if not remove, it will select after one feature, 
+											# however, that feature has been removed, which will cause IndexError
 				dic_temp[fe_selected][fe_v] = ID3(data_fe, feature, threshold)
 			return dic_temp
 ##################################################################################################################
@@ -99,7 +102,7 @@ if __name__ == '__main__':
 	# h_d = empirical_entropy(data)
 	# hd_a = empirical_conditional_entropy(data, 0)
 
-	t = ID3(data, ['age', 'job', 'house', 'credit'], 0.001)
+	t = ID3(data, ['age', 'job', 'house', 'credit'], 0.0000000001)
 	print(t)
 
 
